@@ -2,11 +2,20 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 
 public class Flappybird extends JPanel implements ActionListener,KeyListener{
 
-   private static final String keyEvent = null;
+public void setBackgroundImage(String imagePath) {
+        backgroundImg = new ImageIcon(getClass().getResource(imagePath)).getImage(); 
+        repaint();
+}
+
+    
+ // private static final String keyEvent = null;
     int boardWidth=360;
     int boardheight=640;
 
@@ -77,6 +86,7 @@ public class Flappybird extends JPanel implements ActionListener,KeyListener{
 
     boolean gameover =false;
     double score = 0;
+    
 
     /**
      *
@@ -173,10 +183,14 @@ public class Flappybird extends JPanel implements ActionListener,KeyListener{
                 score+= 0.5;
             }
             if (collision(bird, pipe)){
+                playSound("gameoversound.wav");
+
                 gameover = true;
             }
 
             if(bird.y>boardheight){
+                playSound("gameoversound.wav");
+
                 gameover=true;
             } }
     }
@@ -194,6 +208,7 @@ public class Flappybird extends JPanel implements ActionListener,KeyListener{
 
 
     public boolean collision(Bird a, pipe b){
+        
         return a.x < b.x+b.width&&
                 a.x+a.width > b.x&&
                 a.y < b.y+b.height&&
@@ -202,6 +217,7 @@ public class Flappybird extends JPanel implements ActionListener,KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            playSound("jump-coin.wav");
             velocityY=-9;
             if(gameover){
                 bird.y = birdY;
@@ -211,15 +227,27 @@ public class Flappybird extends JPanel implements ActionListener,KeyListener{
                 gameover = false;
                 gameLoop.start();
                 placepipeTimer.start();
+                
             }
         }
     }
+    
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     @Override 
     public void keyReleased(KeyEvent e) {
+    }
+    private void playSound(String filename) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(getClass().getResource(filename)));
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
