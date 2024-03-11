@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
+
 public class App {
     public static void main(String[] args) throws Exception {
    int boardwidth=360;
@@ -51,11 +53,12 @@ button2.addActionListener(new ActionListener() {
 JPanel buttonPanel = new JPanel();
         buttonPanel.add(button1);
         buttonPanel.add(button2);
-        button1.setPreferredSize(new Dimension(150, 50)); // Adjust width and height as needed
-button2.setPreferredSize(new Dimension(150,50));
+        button1.setPreferredSize(new Dimension(150, 30)); 
+button2.setPreferredSize(new Dimension(150,30));
 
-        // Add button panel to the frame
         frame.add(buttonPanel, BorderLayout.SOUTH);
+       buttonPanel.setBackground(new Color(204, 153, 102)); 
+
    frame.pack();
    flappybird.requestFocus();
    frame.setVisible(true);
